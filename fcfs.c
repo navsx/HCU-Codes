@@ -62,20 +62,23 @@ main (int argc,char *argv[])
 					{				
 				       		//printf("%s\n",ptoken);
 						sscanf(ptoken, "%d", &stoi);
+						//printf("Hi");
 						atmp[l]=stoi;
+						//printf("%d\n",atmp[l]);
 			                	ptoken=strtok(NULL,delim);
 					}
 			       	}
-
+				printf("just before i at first");
 
 				if(ptr==NULL)   //Insert first value
 				{
 
+					printf("i at first");
 					ptr=first;				
-                                ptr->pr=atmp[0];
-                                ptr->name=atmp[1];
-                                ptr->at=atmp[2];
-                                ptr->at=atmp[3];
+					ptr->pr=atmp[0];
+					ptr->name=atmp[1];
+					ptr->at=atmp[2];
+					ptr->ct=atmp[3];
 				}
 
 				else if(ptr->pr > atmp[0])    //If the new number is less then first node => Insert @first
@@ -85,7 +88,7 @@ main (int argc,char *argv[])
 					temp2->pr=atmp[0];
 	                                temp2->name=atmp[1];
 	                                temp2->at=atmp[2];
-	                                temp2->at=atmp[3];
+	                                temp2->ct=atmp[3];
 					temp2->link=ptr;
 					first=temp2;
 					//ptr->link=NULL;
