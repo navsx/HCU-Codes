@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+
 #define nval -9
 typedef struct stack
 {
@@ -32,14 +34,15 @@ int main()
 	  {
 	  popstk();
 	  }*/
-	for(i=0;i<noe;i++)
+	for(i=noe-1;i>=0;i--)
 	{
 		display();
 	}
 	printf("\n\nand now the result\n\n");
+	
 	tower(noe);
 
-	for(i=0;i<noe;i++)
+	for(i=noe-1;i>=0;i--)
 	{
 		display();
 	}
@@ -71,7 +74,7 @@ int pushstk(int ele)
 	else
 	{
 		s1->pstack[s1->size]=ele;
-		printf("s1 ele is %d\n",(s1->pstack[s1->size]));
+		printf("s1 ele is %d size= %d\n",(s1->pstack[s1->size]),(s1->size));
 		(s1->size)++;
 	}
 	if(s2->size==s2->cap)
@@ -87,12 +90,13 @@ int pushstk(int ele)
 		printf("s2 ele is %d\n",(s2->pstack[s2->size]));
 		(s2->size)++;
 	}
+
 	if(s3->size==s3->cap)
 	{
-	//	s3->size=0;
-		s2->pstack[s2->size]=nval;
-		printf("stack3 is full %d\n");
+	//	s2->size=0;
+		s3->pstack[s3->size]=nval;
 		(s3->size)++;
+		printf("stack3 is full\n");
 	}
 	else
 	{
@@ -117,45 +121,67 @@ int popstk()
 }
 int tower(int noe)
 {
+	printf("In the tower\n");
 	int instk1();
 	int instk2();
 	int instk3();
-	int element=(s1->pstack[s1->size]);
 	int flag=-5;
 	int s1t=100,s2t=100,s3t=100;
+	s1->size=noe-1;
 	s2->size=0;
 	s3->size=0;
-	while(s1->size!=0 && s3->size!=s3->cap)
+	printf("s1 ka ele:%d\t s1:%d \ts3:%d \ts3 cap:%d \n",(s1->pstack[s1->size]),(s1->size),(s3->size),(s3->cap));
+	int count=0;
+	int element=(s1->pstack[s1->size]);
+
+	//double numboele=(double)noe;
+	while((s1->size)>0 && (s3->size)<=(s3->cap))
+	//while(count<=(pow(2,noe)-1));
 	{
-		element=(s1->pstack[s1->size]);
-		while(flag!=element)
+		//printf("Count = %d\n",count);
+		//element=(s1->pstack[s1->size]);
+		while(element<s3t || element<s2t)
 		{
+			//printf(" s1 ");
 			if(element%2!=0 && element<s3t)
 			{
 				s3->pstack[s3->size]=element;
 				s3t=(s3->pstack[s3->size]);
+				printf("s3t=%d\n",s3t);
 				s3->size++;
 				flag=element;
+				printf("flag=%d\n",flag);
 				s1->pstack[s1->size]=nval;
 				s1->size--;
 				s1t=(s1->pstack[s1->size]);
+				printf("s1t=%d\n",s1t);
 				element=(s1->pstack[s1->size]);
+				printf("element=%d\n",element);
+				count++;
+				printf("count=%d\n",count);
 			}
-			else if(element<s2t)
+			else if(element%2==0 && element<s2t)
 			{
 				s2->pstack[s2->size]=element;
+				printf("s2 mein =%d\n",(s2->pstack[s2->size]));
 				s2t=(s2->pstack[s2->size]);
+				printf("s2t=%d\n",s2t);
 				s2->size++;
 				flag=element;
+				printf("flag=%d\n",flag);
 				s1->pstack[s1->size]=nval;
 				s1->size--;
 				element=(s1->pstack[s1->size]);
-				s1t=(s3->pstack[s3->size]);
+				printf("element=%d\n",element);
+				s1t=(s1->pstack[s1->size]);
+				printf("s1t=%d\n",s1t);
+				count++;
+				printf("count=%d\n",count);
 			}
 		}
 		flag=-5;
 		element=(s2->pstack[s2->size]);
-		while(flag!=element)
+		while(element<s1t || element<s3t)
 		{
 			if(element%2!=0 && element<s1t)
 			{
@@ -167,6 +193,7 @@ int tower(int noe)
 				s2->size--;
 				s2t=(s2->pstack[s2->size]);
 				element=(s2->pstack[s2->size]);
+				count++;
 			}
 			else if(element<s3t)
 			{
@@ -178,11 +205,12 @@ int tower(int noe)
 				s2->size--;
 				element=(s2->pstack[s2->size]);
 				s2t=(s2->pstack[s2->size]);
+				count++;
 			}
 		}
 		flag=-5;
 		element=(s3->pstack[s3->size]);
-		while(flag!=element)
+		while(element<s3t || element<s2t)
 		{
 			if(element%2!=0 && element<s2t)
 			{
@@ -194,6 +222,7 @@ int tower(int noe)
 				s3->size--;
 				s3t=(s3->pstack[s3->size]);
 				element=(s3->pstack[s3->size]);
+				count++;
 			}
 			else if(element<s1t)
 			{
@@ -205,6 +234,7 @@ int tower(int noe)
 				s3->size--;
 				element=(s3->pstack[s3->size]);
 				s3t=(s3->pstack[s3->size]);
+				count++;
 			}
 		}
 		flag=-5;
