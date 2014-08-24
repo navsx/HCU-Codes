@@ -6,7 +6,7 @@
 typedef struct stack
 {
 	int cap;
-	int size;
+	int index;
 	int *pstack;
 }st;
 int crtstk(int);
@@ -19,6 +19,11 @@ st *s2=NULL;
 st *s3=NULL;
 int *top=NULL;
 //int flag,element;
+
+
+/*-------------------------------------------------***************************************-------------------------------------------*/
+
+
 int main()
 {
 	int noe,i=0;
@@ -47,78 +52,95 @@ int main()
 		display();
 	}
 }
+
+
+/*-------------------------------------------------***************************************-------------------------------------------*/
+
 int crtstk(int noe)
 {
 	s1=(st *)malloc(sizeof(st *));
 	s1->pstack=(int *)malloc(sizeof(int)* noe);
-	s1->size=0;
+	s1->index=0;
 	s1->cap=noe-1;
 	s2=(st *)malloc(sizeof(st *));
 	s2->pstack=(int *)malloc(sizeof(int)* noe);
-	s2->size=0;
+	s2->index=0;
 	s2->cap=noe-1;
 	s3=(st *)malloc(sizeof(st *));
 	s3->pstack=(int *)malloc(sizeof(int)* noe);
-	s3->size=0;
+	s3->index=0;
 	s3->cap=noe-1;
 	return 0;
 }
+
+
+/*-------------------------------------------------***************************************-------------------------------------------*/
+
+
 int pushstk(int ele)
 {
-	if(s1->size==s1->cap)
+	if(s1->index==s1->cap)
 	{
-		//s1->size=0;
+		//s1->index=0;
 		printf("stack1 is full\n");
-		(s1->size)++;	
+		(s1->index)++;	
 	}
 	else
 	{
-		s1->pstack[s1->size]=ele;
-		printf("s1 ele is %d size= %d\n",(s1->pstack[s1->size]),(s1->size));
-		(s1->size)++;
+		s1->pstack[s1->index]=ele;
+		printf("s1 ele is %d index= %d\n",(s1->pstack[s1->index]),(s1->index));
+		(s1->index)++;
 	}
-	if(s2->size==s2->cap)
+	if(s2->index==s2->cap)
 	{
-	//	s2->size=0;
-		s2->pstack[s2->size]=nval;
-		(s2->size)++;
+	//	s2->index=0;
+		s2->pstack[s2->index]=nval;
+		(s2->index)++;
 		printf("stack2 is full\n");
 	}
 	else
 	{
-		s2->pstack[s2->size]=nval;
-		printf("s2 ele is %d\n",(s2->pstack[s2->size]));
-		(s2->size)++;
+		s2->pstack[s2->index]=nval;
+		printf("s2 ele is %d\n",(s2->pstack[s2->index]));
+		(s2->index)++;
 	}
 
-	if(s3->size==s3->cap)
+	if(s3->index==s3->cap)
 	{
-	//	s2->size=0;
-		s3->pstack[s3->size]=nval;
-		(s3->size)++;
+	//	s2->index=0;
+		s3->pstack[s3->index]=nval;
+		(s3->index)++;
 		printf("stack3 is full\n");
 	}
 	else
 	{
-		s3->pstack[s3->size]=nval;
-		printf("s3 ele is %d\n",(s3->pstack[s3->size]));
-		(s3->size)++;
+		s3->pstack[s3->index]=nval;
+		printf("s3 ele is %d\n",(s3->pstack[s3->index]));
+		(s3->index)++;
 	}
 	return 0;
+
 }
+
+
+/*-------------------------------------------------***************************************-------------------------------------------*/
+
 int popstk()
 {
-	if(s1->size==0)
+	if(s1->index==0)
 	{
-		printf("Stack is empty now, last element is %d\n",s1->pstack[s1->size]);
+		printf("Stack is empty now, last element is %d\n",s1->pstack[s1->index]);
 	}
 	else
 	{
-		s1->size--;
-		printf("Popping : %d,size is :%d\n",s1->pstack[s1->size],s1->size);
+		s1->index--;
+		printf("Popping : %d,index is :%d\n",s1->pstack[s1->index],s1->index);
 	}
 	return 0;
 }
+
+/*-------------------------------------------------***************************************-------------------------------------------*/
+
 int tower(int noe)
 {
 	printf("In the tower\n");
@@ -127,133 +149,246 @@ int tower(int noe)
 	int instk3();
 	int flag=-5;
 	int s1t=100,s2t=100,s3t=100;
-	s1->size=noe-1;
-	s2->size=0;
-	s3->size=0;
-	printf("s1 ka ele:%d\t s1:%d \ts3:%d \ts3 cap:%d \n",(s1->pstack[s1->size]),(s1->size),(s3->size),(s3->cap));
+	s1->index=noe-1;
+	s2->index=-1;
+	s3->index=-1;
+	printf("s1 ka ele:%d\t s1:%d \ts3:%d \ts3 cap:%d \n",(s1->pstack[s1->index]),(s1->index),(s3->index),(s3->cap));
 	int count=0;
-	int element=(s1->pstack[s1->size]);
+	int element=(s1->pstack[s1->index]);
 
 	//double numboele=(double)noe;
-	while((s1->size)>0 && (s3->size)<=(s3->cap))
-	//while(count<=(pow(2,noe)-1));
+	//while((s1->index)>=0 && (s3->index)<=((s3->cap)-1))
+	while(count<=(pow(2,noe)-1));
 	{
-		//printf("Count = %d\n",count);
-		//element=(s1->pstack[s1->size]);
-		while(element<s3t || element<s2t)
+
+//		printf("Going to process stack1\n");
+
+		while(s1t!=flag && (element<s3t || element<s2t))
 		{
-			//printf(" s1 ");
-			if(element%2!=0 && element<s3t)
+			if(s1t!=flag && element%2!=0 && element<s3t)
 			{
-				s3->pstack[s3->size]=element;
-				s3t=(s3->pstack[s3->size]);
+				s3->index++;
+				s3->pstack[s3->index]=element;
+				printf("s3 mein =%d\n",(s3->pstack[s3->index]));
+				s3t=(s3->pstack[s3->index]);
 				printf("s3t=%d\n",s3t);
-				s3->size++;
-				flag=element;
+
+				flag=s3t;
 				printf("flag=%d\n",flag);
-				s1->pstack[s1->size]=nval;
-				s1->size--;
-				s1t=(s1->pstack[s1->size]);
-				printf("s1t=%d\n",s1t);
-				element=(s1->pstack[s1->size]);
-				printf("element=%d\n",element);
-				count++;
-				printf("count=%d\n",count);
+
+				s1->pstack[s1->index]=nval;
+				s1->index--;
+
+				if(s1->index<0)
+				{
+					s1t=100;
+					break;
+				}
+				else
+				{
+					s1t=(s1->pstack[s1->index]);
+					printf("s1t=%d\n",s1t);
+
+					element=(s1->pstack[s1->index]);
+					printf("element=%d\n",element);
+
+					count++;
+					printf("count=%d\n",count);
+				}
 			}
-			else if(element%2==0 && element<s2t)
+			else if(s1t!=flag && element%2==0 && element<s2t)
 			{
-				s2->pstack[s2->size]=element;
-				printf("s2 mein =%d\n",(s2->pstack[s2->size]));
-				s2t=(s2->pstack[s2->size]);
+				s2->index++;
+				s2->pstack[s2->index]=element;
+				printf("s2 mein =%d\n",(s2->pstack[s2->index]));
+				s2t=(s2->pstack[s2->index]);
 				printf("s2t=%d\n",s2t);
-				s2->size++;
-				flag=element;
+
+				flag=s2t;
 				printf("flag=%d\n",flag);
-				s1->pstack[s1->size]=nval;
-				s1->size--;
-				element=(s1->pstack[s1->size]);
-				printf("element=%d\n",element);
-				s1t=(s1->pstack[s1->size]);
+
+				s1->pstack[s1->index]=nval;
+				s1->index--;
+
+				if(s1->index<0)
+				{
+					s1t=100;
+					break;
+				}
+				else
+				{
+					s1t=(s1->pstack[s1->index]);
+					printf("s1t=%d\n",s1t);
+
+					element=(s1->pstack[s1->index]);
+					printf("element=%d\n",element);
+
+					count++;
+					printf("count=%d\n",count);
+				}
+			}
+		}
+
+/*--------------------------------------------------------------------------------------*/
+		element=(s2->pstack[s2->index]);
+//		printf("Going to process stack2\n");
+
+		while(s2t!=flag && (element<s3t || element<s1t) && (s2->index)>=0)
+		{
+			if(s2t!=flag && element%2!=0 && element<s1t)
+			{
+				s1->index++;
+				s1->pstack[s1->index]=element;
+				printf("s1 mein =%d\n",(s1->pstack[s1->index]));
+				s1t=(s1->pstack[s1->index]);
 				printf("s1t=%d\n",s1t);
-				count++;
-				printf("count=%d\n",count);
+
+				flag=s1t;
+				printf("flag=%d\n",flag);
+
+				s2->pstack[s2->index]=nval;
+				s2->index--;
+
+				if(s2->index<0)
+				{
+					s2t=100;
+					break;
+				}
+				else
+				{
+					s2t=(s2->pstack[s2->index]);
+					printf("s2t=%d\n",s2t);
+
+					element=(s2->pstack[s2->index]);
+					printf("element=%d\n",element);
+
+					count++;
+					printf("count=%d\n",count);
+				}
+			}
+			else if(s2t!=flag && element%2==0 && element<s3t)
+			{
+				s3->index++;
+				s3->pstack[s3->index]=element;
+				printf("s3 mein =%d\n",(s3->pstack[s3->index]));
+				s3t=(s3->pstack[s3->index]);
+				printf("s3t=%d\n",s3t);
+
+				flag=s3t;
+				printf("flag=%d\n",flag);
+
+				s2->pstack[s2->index]=nval;
+				s2->index--;
+				if(s2->index<0)
+				{
+					s2t=100;
+					break;
+				}
+				else
+				{
+					s2t=(s2->pstack[s2->index]);
+					printf("s2t=%d\n",s2t);
+
+					element=(s2->pstack[s2->index]);
+					printf("element=%d\n",element);
+
+					count++;
+					printf("count=%d\n",count);
+				}
 			}
 		}
-		flag=-5;
-		element=(s2->pstack[s2->size]);
-		while(element<s1t || element<s3t)
+
+
+/*--------------------------------------------------------------------------------------*/
+//		printf("Going to process stack3\n");
+		element=(s3->pstack[s3->index]);
+
+		while(s3t!=flag && (element<s1t || element<s2t) && (s2->index)>=0)
 		{
-			if(element%2!=0 && element<s1t)
+			if(s3t!=flag && element%2!=0 && element<s2t)
 			{
-				s1->pstack[s1->size]=element;
-				s1t=(s1->pstack[s1->size]);
-				s1->size++;
-				flag=element;
-				s2->pstack[s2->size]=nval;
-				s2->size--;
-				s2t=(s2->pstack[s2->size]);
-				element=(s2->pstack[s2->size]);
-				count++;
+				s2->index++;
+				s2->pstack[s2->index]=element;
+				printf("s2 mein =%d\n",(s2->pstack[s2->index]));
+				s2t=(s2->pstack[s2->index]);
+				printf("s2t=%d\n",s2t);
+
+				flag=s2t;
+				printf("flag=%d\n",flag);
+
+				s3->pstack[s3->index]=nval;
+				s3->index--;
+
+				if(s3->index<0)
+				{
+					s3t=100;
+					break;
+				}
+				else
+				{
+					s3t=(s3->pstack[s3->index]);
+					printf("s3t=%d\n",s3t);
+
+					element=(s3->pstack[s3->index]);
+					printf("element=%d\n",element);
+
+					count++;
+					printf("count=%d\n",count);
+				}
 			}
-			else if(element<s3t)
+			else if(s3t!=flag && element%2==0 && element<s1t)
 			{
-				s3->pstack[s3->size]=element;
-				s3t=(s3->pstack[s3->size]);
-				s3->size++;
-				flag=element;
-				s2->pstack[s2->size]=nval;
-				s2->size--;
-				element=(s2->pstack[s2->size]);
-				s2t=(s2->pstack[s2->size]);
-				count++;
+				s1->index++;
+				s1->pstack[s1->index]=element;
+				printf("s1 mein =%d\n",(s1->pstack[s1->index]));
+				s1t=(s1->pstack[s1->index]);
+				printf("s1t=%d\n",s1t);
+
+				flag=s1t;
+				printf("flag=%d\n",flag);
+
+				s3->pstack[s3->index]=nval;
+				s3->index--;
+
+				if(s3->index<0)
+				{
+					s3t=100;
+					break;
+				}
+				else
+				{
+					s3t=(s3->pstack[s3->index]);
+					printf("s3t=%d\n",s3t);
+
+					element=(s3->pstack[s3->index]);
+					printf("element=%d\n",element);
+
+					count++;
+					printf("count=%d\n",count);
+				}
 			}
 		}
-		flag=-5;
-		element=(s3->pstack[s3->size]);
-		while(element<s3t || element<s2t)
-		{
-			if(element%2!=0 && element<s2t)
-			{
-				s2->pstack[s2->size]=element;
-				s2t=(s2->pstack[s2->size]);
-				s2->size++;
-				flag=element;
-				s3->pstack[s3->size]=nval;
-				s3->size--;
-				s3t=(s3->pstack[s3->size]);
-				element=(s3->pstack[s3->size]);
-				count++;
-			}
-			else if(element<s1t)
-			{
-				s1->pstack[s1->size]=element;
-				s1t=(s1->pstack[s1->size]);
-				s1->size++;
-				flag=element;
-				s3->pstack[s3->size]=nval;
-				s3->size--;
-				element=(s3->pstack[s3->size]);
-				s3t=(s3->pstack[s3->size]);
-				count++;
-			}
-		}
-		flag=-5;
-		element=(s1->pstack[s1->size]);
+		
+		element=(s1->pstack[s1->index]);
 	}
 	return 0;
 }
+
+
+/*-------------------------------------------------***************************************-------------------------------------------*/
+
 int display()
 {
-	if(s1->size==0 && s2->size==0 && s3->size==0)
+	if(s1->index==0 && s2->index==0 && s3->index==0)
 	{
-		printf("%d\t:%d\t:%d\n",s1->pstack[s1->size],s2->pstack[s2->size],s3->pstack[s3->size]);
+		printf("%d\t:%d\t:%d\n",s1->pstack[s1->index],s2->pstack[s2->index],s3->pstack[s3->index]);
 	}
 	else
 	{
-		s1->size--;
-		s2->size--;
-		s3->size--;
-		printf("%d\t:%d\t:%d\n",s1->pstack[s1->size],s2->pstack[s2->size],s3->pstack[s3->size]);	
+		s1->index--;
+		s2->index--;
+		s3->index--;
+		printf("%d\t:%d\t:%d\n",s1->pstack[s1->index],s2->pstack[s2->index],s3->pstack[s3->index]);	
 	}
 	return 0;
 }
