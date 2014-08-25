@@ -4,7 +4,7 @@
 
 main (int argc,char *argv[])
 {
-	int atmp[5];
+	int atmp[100]={ [0 ... 99] = -1 };
 	char strtmp[100]="\0";
 	char lstr[100]="\0";
 	int getnum=0,i=0;
@@ -49,8 +49,9 @@ main (int argc,char *argv[])
 		}
 		fclose(ifile);
 
-		for(i=0;i<5;i++)
+		for(i=0;i<100;i++)
 		{
+			if(atmp[i]>=0)
 			printf("[%d]\n",atmp[i]);
 		}
 	}
