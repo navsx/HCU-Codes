@@ -8,6 +8,8 @@ main (int argc,char *argv[])
 	char strtmp[100]="\0";
 	char lstr[100]="\0";
 	int getnum=0,i=0;
+	int count=0;
+	int j,k,item;
 
 	if(argc!=3)
 	{
@@ -26,16 +28,12 @@ main (int argc,char *argv[])
 		else
 		{
 
-			printf("\nNow looping:\n");
 
 			while(fgets(lstr,100,ifile)!=NULL)   //get numbers upto end of file
 			{	
-				printf("in while\n");
 				sscanf(lstr,"%d",&getnum);
-				//printf("after scanf\n");
 				if(isdigit(getnum)==0)
 				{
-					printf("entering in arr\n");
 					atmp[i]=getnum;
 					i++;
 
@@ -48,12 +46,46 @@ main (int argc,char *argv[])
 			}
 		}
 		fclose(ifile);
-
+		
+		printf("\nUnsorted Array : \n");
+		printf("[ ");
 		for(i=0;i<100;i++)
 		{
 			if(atmp[i]>=0)
-			printf("[%d]\n",atmp[i]);
+			{
+				printf("%d ",atmp[i]);
+				count++;
+			}
 		}
-	}
+		
+		printf(" ]");
+		
+		for(i=0;i<=count;i++)
+		{
+			k=i;
+			j=i/2;
+			item=atmp[i];
+			while((j>0)&&(atmp[j]<item))
+			{
+				atmp[k]=atmp[j];
+				k=j;
+				j=j/2;
+			}
+			atmp[k]=item;
+		}
+		
+		printf("\n\nSorted Array : \n");
+		printf("[ ");
 
-}	
+		for(i=0;i<=count;i++)
+		{
+			if(atmp[i]>=0)
+			{
+				printf(" %d ",atmp[i]);
+				//count++;
+			}
+		}
+		printf(" ]");
+			
+	}
+}
