@@ -85,7 +85,7 @@ main (int argc,char *argv[])
 				//count++;
 			}
 		}
-		printf(" ]");
+		printf("]");
 			
 	}
 }
