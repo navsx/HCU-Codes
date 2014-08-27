@@ -1,4 +1,9 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+//#define in Insert
+//#define del Delete
 
 typedef struct node
         {
@@ -28,8 +33,11 @@ main (int argc,char *argv[])
 			nd *last=NULL;		
 			last=first;
 
-                        nd *ptr=NULL;
-		        ptr=first;
+                        nd *ptri=NULL;
+		        ptri=first;
+
+			nd *ptrd=NULL;
+			ptrd=first;
 
 			nd *temp=NULL;
 				
@@ -45,14 +53,71 @@ main (int argc,char *argv[])
 		{
 			int getnumber;
 			char s[100];
+			char subsi[]="Insert";
+			char subsd[]="Delete";
+			char lstr[2]=":";
+			char *token;
 			printf("\nThese were the numbers in the input file:");
 
 			while(fgets(s,10,ifile)!=NULL)
 			{
-				getnumber=atoi(s);
-				printf("\n\t\t%d",getnumber);
+				token = strtok(s,lstr);
 
-				if(ptr->f==NULL)   //Insert first value
+				if(strcmp(subsd,s)==0)
+				{
+					token = strtok(NULL, s);
+					getnumber=atoi(token);
+					printf("Delete: \n\t\t%d\n",getnumber);
+
+					if(ptri->f==NULL)   //Insert first value
+					{
+						printf("List is empty,can't delete anything\n");
+					}
+					else
+					{
+						while(first->f!=first)
+						{
+							if(ptrd->data!=getnumber)
+							{
+								ptrd=ptrd->f;
+							}
+							else
+							{
+								ptrd->b->f=ptrd->f;
+								ptrd->f->b=ptrd->b;
+								ptrd=first;
+
+							}
+						}
+					}
+
+				}
+				else if(strcmp(subsi,s)==0)
+				{
+					token = strtok(NULL, s);
+					getnumber=atoi(token);
+					printf("Insert:\n\t\t%d\n",getnumber);
+
+					if(ptri->f==NULL)   //Insert first value
+					{
+						ptri->data=getnumber;
+						ptri->f=ptri;
+						ptri->b=ptri;
+					}
+					else
+					{
+						temp=(nd *)malloc(sizeof(nd));
+						temp->data=getnumber;
+						ptri->f=temp;
+						temp->f=first;
+						last=temp;
+						temp->b=ptri;
+						ptri=ptri->f;
+					}
+
+				}
+
+/*				if(ptr->f==NULL)   //Insert first value
 				{
 					ptr->data=getnumber;
 					ptr->f=ptr;
@@ -67,19 +132,19 @@ main (int argc,char *argv[])
 					last=temp;
 					temp->b=ptr;
 					ptr=ptr->f;
-				}
+				}*/
 			}			
 
 			fclose(ifile);
 
-			ptr=first;
+			ptri=first;
 			printf("Circular Doubly Linked List is : \n");
-			while(ptr->f!=first)
+			while(ptri->f!=first)
 			{
-				printf("%d \n",ptr->data);
-				ptr=ptr->f;
+				printf("%d \n",ptri->data);
+				ptri=ptri->f;
 			}
-			printf("%d \n",ptr->data);
+			printf("%d \n",ptri->data);
 		}
 
 	}
