@@ -69,24 +69,36 @@ main (int argc,char *argv[])
 					getnumber=atoi(token);
 					printf("Delete: \n\t\t%d\n",getnumber);
 
-					if(ptri->f==NULL)   //Insert first value
+					if(ptri->f==NULL) 
 					{
 						printf("List is empty,can't delete anything\n");
 					}
 					else
 					{
-						while(first->f!=first)
+						while(ptrd!=last)
 						{
+							//printf("ptrd->data");
+							
 							if(ptrd->data!=getnumber)
 							{
+							printf("ptrd:%d num:%d\n",ptrd->data,getnumber);
 								ptrd=ptrd->f;
-							}
-							else
+								//printf("mv f");
+							}							else if(ptrd->data==getnumber && first->data!=getnumber)
 							{
+								printf("nd found");
 								ptrd->b->f=ptrd->f;
 								ptrd->f->b=ptrd->b;
 								ptrd=first;
 
+							}
+							else
+							{
+								printf("frst nd delted");
+								first=ptrd->f;
+								ptrd->f->b=first;
+								last->f=first;
+								ptrd=first;
 							}
 						}
 					}
