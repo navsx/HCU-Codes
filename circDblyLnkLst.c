@@ -2,21 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 
-//#define in Insert
-//#define del Delete
-
 typedef struct node
-        {
-		int data;
-		struct node *f;
-		struct node *b;
+  {
+    	int data;
+    	struct node *f;
+    	struct node *b;
 	}nd; 
 
 
 main (int argc,char *argv[])
 {
-
-	void inBetween(struct node *ptr);
 
 	if(argc!=3)
 	{
@@ -25,7 +20,7 @@ main (int argc,char *argv[])
 	}	
 	else
 	{
-		        nd *first=NULL;
+		  nd *first=NULL;
 			first =(nd *)malloc(sizeof(nd)); 
 			first->f=NULL;
 			first->b=NULL;
@@ -33,8 +28,8 @@ main (int argc,char *argv[])
 			nd *last=NULL;		
 			last=first;
 
-                        nd *ptri=NULL;
-		        ptri=first;
+      nd *ptri=NULL;
+		  ptri=first;
 
 			nd *ptrd=NULL;
 			ptrd=first;
@@ -57,9 +52,9 @@ main (int argc,char *argv[])
 			char subsd[]="Delete";
 			char lstr[2]=":";
 			char *token;
-			printf("\nThese were the numbers in the input file:");
+			printf("\nThese were the numbers in the input file:\n");
 
-			while(fgets(s,10,ifile)!=NULL)
+			while(fgets(s,100,ifile)!=NULL)
 			{
 				token = strtok(s,lstr);
 
@@ -67,7 +62,7 @@ main (int argc,char *argv[])
 				{
 					token = strtok(NULL, s);
 					getnumber=atoi(token);
-					printf("Delete: \n\t\t%d\n",getnumber);
+					printf("Delete: \t\t%d\n",getnumber);
 
 					if(ptri->f==NULL) 
 					{
@@ -76,30 +71,47 @@ main (int argc,char *argv[])
 					else
 					{
 						while(ptrd!=last)
-						{
-							//printf("ptrd->data");
-							
+						{	
 							if(ptrd->data!=getnumber)
 							{
-							printf("ptrd:%d num:%d\n",ptrd->data,getnumber);
+								//printf("ptrd:%d num:%d\n",ptrd->data,getnumber);
 								ptrd=ptrd->f;
-								//printf("mv f");
-							}							else if(ptrd->data==getnumber && first->data!=getnumber)
+							}
+							else if(ptrd->data==getnumber && first->data!=getnumber)
 							{
-								printf("nd found");
+								printf("node found\n");
 								ptrd->b->f=ptrd->f;
 								ptrd->f->b=ptrd->b;
 								ptrd=first;
 
 							}
-							else
+							else if(first->data==getnumber)
 							{
-								printf("frst nd delted");
+								printf("first node delted\n");
 								first=ptrd->f;
 								ptrd->f->b=first;
 								last->f=first;
 								ptrd=first;
 							}
+						}
+
+						if(ptrd->data==getnumber && first!=last)
+						{
+							printf("Last node deleted\n");
+							last=ptrd->b;
+							ptri=last;
+							ptrd=first;
+						}
+						else if(ptrd->data==getnumber && first==last)
+						{
+							printf("Last node deleted and nothing left in the list\n");
+							first=(nd *)malloc(sizeof(nd));
+							first->f=first->b=NULL;
+							ptri=ptrd=last=first;
+						}
+						else
+						{
+							printf("List is already empty\n");
 						}
 					}
 
@@ -108,7 +120,7 @@ main (int argc,char *argv[])
 				{
 					token = strtok(NULL, s);
 					getnumber=atoi(token);
-					printf("Insert:\n\t\t%d\n",getnumber);
+					printf("Insert:\t\t%d\n",getnumber);
 
 					if(ptri->f==NULL)   //Insert first value
 					{
@@ -129,34 +141,25 @@ main (int argc,char *argv[])
 
 				}
 
-/*				if(ptr->f==NULL)   //Insert first value
-				{
-					ptr->data=getnumber;
-					ptr->f=ptr;
-					ptr->b=ptr;
-				}
-				else
-				{
-					temp=(nd *)malloc(sizeof(nd));
-					temp->data=getnumber;
-					ptr->f=temp;
-					temp->f=first;
-					last=temp;
-					temp->b=ptr;
-					ptr=ptr->f;
-				}*/
 			}			
 
 			fclose(ifile);
-
-			ptri=first;
-			printf("Circular Doubly Linked List is : \n");
-			while(ptri->f!=first)
+			
+			if(first->f!=NULL)
 			{
+				ptri=first;
+				printf("Circular Doubly Linked List is : \n");
+				while(ptri->f!=first)
+				{
+					printf("%d \n",ptri->data);
+					ptri=ptri->f;
+				}
 				printf("%d \n",ptri->data);
-				ptri=ptri->f;
 			}
-			printf("%d \n",ptri->data);
+			else
+			{
+				printf("Nothing left to display\n");
+			}
 		}
 
 	}
