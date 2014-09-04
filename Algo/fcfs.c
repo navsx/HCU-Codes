@@ -81,7 +81,7 @@ main (int argc,char *argv[])
 					ptr->ct=atmp[3];
 				}
 
-				else if(ptr->pr > atmp[0])    //If the new number is less then first node => Insert @first
+				else if(ptr->pr > atmp[0])    //If the new number is less then first node => Insert 
 				{
 					//struct node *temp2=NULL;
 					temp2=(struct node *)malloc(sizeof(struct node));
