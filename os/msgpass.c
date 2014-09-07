@@ -1,44 +1,39 @@
 #include<stdio.h>
-#include<time.h>
 #include<stdlib.h>
 #include<string.h>
-
+#include<time.h>
 //I am passing "./<filename> sleep <some value>" as runtime argument
                        // Ex. ./msgpass sleep 3
 
 int main(int argc,char *argv[])
 {
-	int sum =0;
-	int i;
-	FILE *f1,*f2;
+	int sum =0,i,slen,pid,stid;
+	time_t t1,t2;
+	float c1,c2;
+	FILE *ifile,*ofile;
 
 	for(i=1; i<argc; i++) 
 	{
-		int len = strlen(argv[i]);
-		sum+=len;
+		slen = strlen(argv[i]);
+		sum+=slen;
 	}
 
-	char* buffer = malloc(sizeof(char) * (sum + 2));
-	buffer[0] = 0; // The string is now seen as empty.
-	strcpy(buffer,argv[1]);
-	strcat(buffer," ");
-	strcat(buffer,argv[2]);
+	char* s = malloc(sizeof(char) * (sum + 2));
+	strcpy(s,argv[1]);
+	strcat(s," ");
+	strcat(s,argv[2]);
 
-	int pid,stid;
-	//	timeval t;
-	time_t t1,t2;
-	float c1,c2;
 
 	time(&t1);
 
 	if ((pid = fork()) == 0) 
 	{
-		printf("In child\n");
-		system(buffer);
-		printf("In child after sleep\n");
+		printf("Child will execute- %s\n",s);
+		system(s);
 		time(&t2);
-		//printf("end time = %ld",t2);
 		c2 = difftime(t2,t1);
+		
+		printf("Time taken to execute %s is = %f\n",s,c2);
 
 		f1=fopen("file.txt","w");
 		if(f1==0)
