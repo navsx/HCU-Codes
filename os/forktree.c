@@ -6,7 +6,9 @@ int main(void)
      fork();
      fork();
      fork();
-     system("ps -l --forest -C fr");
+     system("ps -e -o pid=process id,pcpu=cpu used,pmem=mem used,comm=cmd name --forest -C ptree");
+     //ps -e -o pid,uname=USERNAME,pcpu=CPU_USAGE,pmem,comm
+     system(sleep 10);
      exit(0);
 }
 
