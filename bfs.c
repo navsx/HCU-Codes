@@ -18,10 +18,11 @@ int main(int argc,char *argv[])
 	char s[100];
 	int nodeArr[maxnodes]={0};
 	list *ptr=NULL;
-	list *first=NULL;
+        arrv[8]={0};
+        arre[8]={0}
 	list *arr[maxnodes];
-	for (i=0; i<maxnodes; i++) arr[i] = NULL;
 
+	for (i=0; i<maxnodes; i++) arr[i] = NULL;
 
 	ifile=fopen(argv[1],"r");
 	if(ifile==0)
@@ -53,8 +54,31 @@ int main(int argc,char *argv[])
 				ptr->link->link=NULL;
 			}
 
+                        ptr=arr[d2];
+			if(ptr==NULL)
+			{
+				ptr=(list *)malloc(sizeof(list));
+				ptr->data=d1;
+				ptr->link=NULL;
+				arr[d2]=ptr;
+			}
+			else
+			{
+				while(ptr->link=NULL)
+				{
+					ptr=ptr->link;
+				}
+				ptr->link=(list *)malloc(sizeof(list));
+				ptr->link->data=d1;
+				ptr->link->link=NULL;
+			}
 		}
 		fclose(ifile);
+		
+		
+		
+		
+		
 	}
 
 	for(i=1;i<=8;i++)
