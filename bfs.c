@@ -13,57 +13,74 @@ typedef struct node
 int main(int argc,char *argv[])
 {
 
-	int d1,d2;
+	int d1,d2,i;
 	FILE *ifile,*ofile;
-	char *s[100]=NULL;
+	char s[100];
 	int nodeArr[maxnodes]={0};
 	list *ptr=NULL;
 	list *first=NULL;
-	
-		ifile=fopen(argv[1],"r");
-		if(ifile==0)
+	list *arr[maxnodes];
+	for (i=0; i<maxnodes; i++) arr[i] = NULL;
+
+
+	ifile=fopen(argv[1],"r");
+	if(ifile==0)
+	{
+		printf("agian in parent:File can't be opened/n");
+		exit(1);
+	}
+	else
+	{
+		while(fgets(s,100,ifile)!=NULL)
 		{
-			printf("agian in parent:File can't be opened/n");
-			exit(1);
-		}
-		else
-		{
-			while(fgets(s,100,ifile)!=NULL)
-                       {
-                        	sscanf(s,"(%d,%d)",&d1,&d2);
-                        	if(nodeArr[d1]==0)
-                        	{
-                        		ptr=(list *)malloc(sizeof(list));
-                        		ptr->data=d2;
-                        		ptr->link=NULL;
-                        		nodeArr[d1]=ptr;
-                        	}
-                        	else
-                        	{
-                        		ptr=nodeArr[d1];
-                        		while(ptr->link=NULL)
-                        		{
-                        			ptr=ptr->link;
-                        		}
-                        		ptr->link=(list *)malloc(sizeof(list));
-                        		ptr->link->data=d2;
-                        		ptr->link->link=NULL;
-                        	}
-                        	
-                       }
-			fclose(ifile);
-		}
-		
-		for(i=1;i<=8;i++)
-		{
-			ptr=nodeArr[i];
-			printf("node %d is connected to : /n",nodeArr[i]);
-			while(ptr!=NULL)
+			sscanf(s,"(%d,%d)",&d1,&d2);
+			ptr=arr[d1];
+			if(ptr==NULL)
 			{
-				printf(" %d ",ptr->data);
+				ptr=(list *)malloc(sizeof(list));
+				ptr->data=d2;
+				ptr->link=NULL;
+				arr[d1]=ptr;
 			}
-			printf("\n");
+			else
+			{
+				while(ptr->link=NULL)
+				{
+					ptr=ptr->link;
+				}
+				ptr->link=(list *)malloc(sizeof(list));
+				ptr->link->data=d2;
+				ptr->link->link=NULL;
+			}
+
 		}
+		fclose(ifile);
+	}
+
+	for(i=1;i<=8;i++)
+	{
+		ptr=arr[i];
+		printf("node %d is connected to : /n",i);
+		while(ptr!=NULL)
+		{
+			printf(" %d ",ptr->data);
+			ptr=ptr->link;
+		}
+		printf("\n");
+	}
 
 	return 0;
 }
+
+
+
+/*
+(1,3)
+(2,4)
+(3,5)
+(4,2)
+(5,6)
+(6,3)
+(7,8)
+(8,1)
+*/
