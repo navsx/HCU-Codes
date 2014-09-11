@@ -14,16 +14,19 @@ typedef struct node
 int entinQ(int,qu **,qu **,qu **,qu **);
 int delfQ(qu **,qu **,qu **,qu **);
 
-typedef struct node
+typedef struct ls
 {
 	int data;
-	struct node *link;
+	struct ls *link;
+	int visited;
+	int explored;
+
 }list;
 
 int main(int argc,char *argv[])
 {
 
-        qu *first=NULL;
+	qu *first=NULL;
 	qu *last=NULL;
 	qu *ptrl=(qu *)malloc(sizeof(qu));
 	ptrl->data = 0;
@@ -35,13 +38,13 @@ int main(int argc,char *argv[])
 	ptrf=first;
 	last=first;
 
-	int d1,d2,i,p;
+	int d1,d2,i,p,catch;
 	FILE *ifile,*ofile;
 	char s[100];
 	int nodeArr[maxnodes]={0};
 	list *ptr=NULL;
-        arrv[maxnodes]={0};
-        arre[maxnodes]={0}
+	int arrv[maxnodes]={0};
+	int arre[maxnodes]={0};
 	list *arr[maxnodes];
 
 	for (i=0; i<maxnodes; i++) arr[i] = NULL;
@@ -61,9 +64,16 @@ int main(int argc,char *argv[])
 			if(ptr==NULL)
 			{
 				ptr=(list *)malloc(sizeof(list));
-				ptr->data=d2;
-				ptr->link=NULL;
-				arr[d1]=ptr;
+				ptr->data=d1;
+				ptr->visited=0;
+				ptr->explored=0;
+
+				ptr->link=(list *)malloc(sizeof(list));
+				ptr->link->data=d2;
+				ptr->link->visited=0;
+				ptr->link->explored=0;
+				ptr->link->link=NULL;
+				//arr[d1]=ptr;
 			}
 			else
 			{
@@ -73,10 +83,12 @@ int main(int argc,char *argv[])
 				}
 				ptr->link=(list *)malloc(sizeof(list));
 				ptr->link->data=d2;
+				ptr->visited=0;
+				ptr->explored=0;
 				ptr->link->link=NULL;
 			}
 
-                        ptr=arr[d2];
+			ptr=arr[d2];
 			if(ptr==NULL)
 			{
 				ptr=(list *)malloc(sizeof(list));
@@ -97,18 +109,7 @@ int main(int argc,char *argv[])
 		}
 		fclose(ifile);
 	}
-printf("Pick one edge to start traversal with from 1 to 8\n")
-scanf("%d",&p);
 
-ptr=arr[p];
-while(ptr)
-{
-arrv[p]=1;
-arrv[ptr->data]=1;
-entinQ(ptr->data,&ptrf,&ptrl,&last,&first);
-ptr=ptr->link;
-}
-arre[p]=1;
 
 	for(i=1;i<=8;i++)
 	{
@@ -122,19 +123,77 @@ arre[p]=1;
 		printf("\n");
 	}
 
+
+	printf("Pick one edge to start traversal with from 1 to 8\n");
+	scanf("%d",&p);
+
+	ptr=arr[p];
+	ptr->explored=1;
+	arrv[p]=1;
+	arre[p]=1;
+	printf("First node explored is %d\n",ptr->data);
+	
+	while(ptr)
+	{
+		ptr->visited=1;
+		arrv[ptr->data]=1;
+		//arrv[ptr->data]=1;
+		entinQ(ptr->data,&ptrf,&ptrl,&last,&first);
+		ptr=ptr->link;
+	}
+
+	printf("Other nodes are \n");
+
+	while((catch=delfQ(&ptrf,&ptrl,&last,&first))!=-1)
+	{
+		ptr=arr[catch];
+		//ptr->explored=1;
+		arre[catch]=1;
+
+		printf("%d\n",catch);
+
+		while(ptr)
+		{
+			if(arrv[ptr->data]==1)
+			{
+				ptr=ptr->link;
+			}
+			else
+			{
+				//ptr->visited=1;
+				arrv[ptr->data]=1;
+				entinQ(ptr->data,&ptrf,&ptrl,&last,&first);
+				ptr=ptr->link;
+			}
+		}
+
+	}
+
+	/*	for(i=1;i<=8;i++)
+		{
+		ptr=arr[i];
+		printf("node %d is connected to : /n",i);
+		while(ptr!=NULL)
+		{
+		printf(" %d ",ptr->data);
+		ptr=ptr->link;
+		}
+		printf("\n");
+		} */
+
 	return 0;
 }
 
 /*
-(1,3)
-(2,4)
-(3,5)
-(4,2)
-(5,6)
-(6,3)
-(7,8)
-(8,1)
-*/
+   (1,3)
+   (2,4)
+   (3,5)
+   (4,2)
+   (5,6)
+   (6,3)
+   (7,8)
+   (8,1)
+   */
 
 int entinQ(int num,qu **ptrf,qu **ptrl,qu **last,qu **first)
 {     
@@ -163,29 +222,37 @@ int entinQ(int num,qu **ptrf,qu **ptrl,qu **last,qu **first)
 
 int delfQ(qu **ptrf,qu **ptrl,qu **last,qu **first)
 {
-        if(*first==*last && *first!=NULL)
-        {
-                printf("Deleting Last element\n");
-                *first=NULL;
-                *ptrl=NULL;
-                *last=NULL;
-        }
-        else if(*first==*last && *first==NULL)
-        {
-                printf("Nothing left to delete\n");
-        }
-        else
-        {
-                printf("Deleting..\n");
-     /*           *ptrl=(*ptrl)->prev;
-                (*ptrl)->next=NULL;
-                *last=*ptrl;*/
+	int val;
+	if(*first==*last && *first!=NULL)
+	{
+		printf("Deleting Last element\n");
+		val = (*first)->data;
+		*first=NULL;
+		*ptrl=NULL;
+		*last=NULL;
+		return val;
+	}
+	else if(*first==*last && *first==NULL)
+	{
+		printf("Nothing left to delete\n");
+		return -1;
+	}
+	else
+	{
+		printf("Deleting..\n");
+		/*           *ptrl=(*ptrl)->prev;
+			     (*ptrl)->next=NULL;
+		 *last=*ptrl;*/
 
 		printf("%d",(*ptrf)->data);
-                *ptrf=(*ptrf)->next;
-                (*ptrf)->prev=NULL;
-                *first=*ptrf;
-        }
 
-	return 0;
+		val = (*first)->data;
+
+		*ptrf=(*ptrf)->next;
+		(*ptrf)->prev=NULL;
+		*first=*ptrf;
+
+		return val;
+	}
+
 }
