@@ -34,10 +34,11 @@ int main(int argc,char *argv[])
 	}
 	else
 	{
+		printf("File opened succ :) \n");
 		while(fgets(s,100,ifile)!=NULL)
 		{
 			sscanf(s,"%d,%d:%[^\n]",&x,&y,city);
-			
+			printf("x,y,city = %d,%d,%s \n",x,y,city);
 			if(ptr==NULL)
 			{
 				ptr=(soochi *)malloc(sizeof(soochi));
@@ -49,9 +50,11 @@ int main(int argc,char *argv[])
 				ptr->daen=NULL;
 				ptr->par=NULL;
 				first=ptr;
+				printf("First Node info: \n X=%d Y=%d Name=%s\n",first->a,first->b,first->shahar);
 			}
 			else
 			{
+				printf("Calling insert func\n");
 				insertkd(x,y,city,&ptr,&first);
 			}
 
@@ -84,10 +87,13 @@ temp=(soochi *)malloc(sizeof(soochi));
 
 soochi *bp=NULL;	
 bp=(soochi *)malloc(sizeof(soochi));
+bp=*(pptr);
 
 temp=*(ptr);
 int x1=x;int y1=y;char cname[100];
 strcpy(cname,city);
+
+printf("Inside insert\n trying to insert x-> %d , y-> %d , city-> %s \n",x1,y1,cname);
 	
 	while(temp!=NULL)
 	{
@@ -125,9 +131,11 @@ strcpy(cname,city);
 
 		if(((*pptr)->c)%2==0)
 		{
+			printf("Inside last iteration\n");
 			if(((*pptr)->a)<x1)
 			{
 				//insert @right
+				printf("X cmp and right\n");
 				temp->a=x1;
 				temp->b=y1;
 				strcpy(temp->shahar,cname);
@@ -140,6 +148,7 @@ strcpy(cname,city);
 			else
 			{
 				//insert @left
+				printf("X cmp and left\n");
 				temp->a=x1;
 				temp->b=y1;
 				strcpy(temp->shahar,cname);
@@ -155,6 +164,7 @@ strcpy(cname,city);
 			if((temp->a)<y1)
 			{
 				//insert @right
+				printf("Y cmp and right\n");
 				temp->a=x1;
 				temp->b=y1;
 				strcpy(temp->shahar,cname);
@@ -167,6 +177,7 @@ strcpy(cname,city);
 			else
 			{
 				//insert @left
+				printf("Y cmp and left\n");
 				temp->a=x1;
 				temp->b=y1;
 				strcpy(temp->shahar,cname);
